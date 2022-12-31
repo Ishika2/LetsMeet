@@ -35,7 +35,8 @@
             android:layout_alignStart="@id/remote_video_view_container"
             android:layout_marginTop="40dp"
             android:onClick="joinChannel"
-            android:text="Join" />
+            android:text="Join"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/LeaveButton"
@@ -46,5 +47,42 @@
             android:layout_marginTop="40dp"
             android:onClick="leaveChannel"
             android:text="Leave" />
+
+        <ImageView
+            android:id="@+id/mic_state"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/JoinButton"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_baseline_mic_24"
+            tools:ignore="SpeakableTextPresentCheck" />
+<!--        <ImageView-->
+<!--            android:id="@+id/mic_unmute"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_below="@+id/JoinButton"-->
+<!--            android:layout_marginLeft="100dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:src="@drawable/ic_baseline_mic_24"-->
+<!--            android:onClick="Mute" />-->
+        <ImageView
+            android:id="@+id/camera_state"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/JoinButton"
+            android:layout_marginStart="185dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_camera_on"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/flip_camera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/JoinButton"
+            android:layout_marginStart="270dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_baseline_flip_camera_ios" />
     </RelativeLayout>
 </ScrollView>

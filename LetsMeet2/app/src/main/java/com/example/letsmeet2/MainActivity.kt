@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.view.SurfaceView
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.agora.rtc2.*
 import io.agora.rtc2.video.VideoCanvas
+import com.example.letsmeet2.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,10 +23,11 @@ class MainActivity : AppCompatActivity() {
     private val appId = "9486fae3780f49dfa33aba81ac475cb4"
 
     // Fill the channel name.
-    private val channelName = "conference"
+    private val channelName = "Meeting"
 
     // Fill the temp token generated on Agora Console.
-    private val token = "007eJxTYFCR1TB+UGvzv1XycJvg90QLnw9pHC90iycbmP32PK++4Y4Cg6WJhVlaYqqxuYVBmollSlqisXFiUqKFYWKyiblpcpKJj9LU5IZARobuCfNZGBkgEMTnYkjOz0tLLUrNS05lYAAAtZIhAw=="
+    private val token = "007eJxTYEivuPD43HEb7c5tc7bMXznh1O+NplesW7h8PkxnSWjaFOmgwGBpYmGWlphqbG5hkGZimZKWaGycmJRoYZiYbGJumpxkEmoxL7khkJHhiH0qKyMDBIL47Ay+qaklmXnpDAwAU3AiHA=="
+    //since it's a temporary token it will expire on 18th December 9:44 UTC
 
     // An integer that identifies the local user.
     private val uid = 0
@@ -38,6 +41,13 @@ class MainActivity : AppCompatActivity() {
     //SurfaceView to render Remote video in a Container.
     private var remoteSurfaceView: SurfaceView? = null
 
+    private var btnToggleMute: ImageView? = null
+
+    private var btnToggleCamera: ImageView? = null
+
+    private var btnFlipCamera: ImageView? = null
+
+    private lateinit var binding: ActivityMainBinding
 
     private val PERMISSION_REQ_ID = 22
     private val REQUESTED_PERMISSIONS = arrayOf(
@@ -176,6 +186,60 @@ class MainActivity : AppCompatActivity() {
         if (!checkSelfPermission())
             ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID)
         setupVideoSDKEngine()
+
+        btnToggleMute = findViewById(R.id.mic_state)
+
+        btnToggleCamera = findViewById(R.id.camera_state)
+
+        btnFlipCamera = findViewById(R.id.flip_camera)
+
+        agoraEngine?.muteLocalAudioStream(false) //by default unmute
+
+        agoraEngine?.muteLocalVideoStream(false) //by default video is on
+
+        val isUnMute: Boolean = true  //by default it's unmute
+
+        val isCamera: Boolean = true  //by default video is on
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        btnToggleMute?.setOnClickListener(
+            View.OnClickListener {
+                if(isUnMute)
+                {
+                    agoraEngine?.muteLocalAudioStream(true)
+                    binding.micState.setImageResource(R.drawable.ic_baseline_mic_off_24)
+                }
+                else
+                {
+                    agoraEngine?.muteLocalAudioStream(false)
+                    binding.micState.setImageResource(R.drawable.ic_baseline_mic_24)
+                }
+            }
+        )
+
+        btnToggleCamera?.setOnClickListener(
+            View.OnClickListener {
+                if(isCamera)
+                {
+                    agoraEngine?.muteLocalVideoStream(true)
+                    binding.cameraState.setImageResource(R.drawable.ic_camera_off)
+                }
+                else
+                {
+                    agoraEngine?.muteLocalVideoStream(false)
+                    binding.cameraState.setImageResource(R.drawable.ic_camera_on)
+                }
+            }
+        )
+
+        btnFlipCamera?.setOnClickListener(
+            View.OnClickListener {
+                agoraEngine?.switchCamera()
+                binding.flipCamera.rotation = 90f
+            }
+        )
     }
 
     override fun onDestroy() {
@@ -189,5 +253,13 @@ class MainActivity : AppCompatActivity() {
             agoraEngine = null
         }.start()
     }
+
+//    private fun isMute() {
+//
+//    }
+//    fun Mute(view: View) {}
+//    fun flipCamera(view: View) {
+//
+//    }
 
 }
